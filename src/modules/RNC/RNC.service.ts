@@ -4,7 +4,7 @@ import { InjectPage } from 'nest-puppeteer';
 import type { Page } from 'puppeteer';
 
 @Injectable()
-export class ScrapingService {
+export class RncService {
     constructor(@InjectPage() private readonly page: Page) {}  
     async crawl(url: string, RNC: string){
     await this.page.goto(url, { waitUntil: 'networkidle2' });

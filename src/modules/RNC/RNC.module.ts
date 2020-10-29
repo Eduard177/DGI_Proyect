@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import {ScrapingController} from './RNC.controller'
-import {ScrapingService} from './RNC.service'
+import {RncController} from './rnc.controller'
+import {RncService} from './rnc.service'
 import { PuppeteerModule } from 'nest-puppeteer';
 
 @Module({
     imports: [PuppeteerModule.forRoot()],
-    controllers: [ScrapingController],
-    providers: [ScrapingService]
+    controllers: [RncController],
+    providers: [RncService]
 })
-export class ScrapingModule {}
+export class RncModule {}
