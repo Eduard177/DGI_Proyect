@@ -28,6 +28,12 @@ export class NcfService {
         })
         if(!isValue){
             throw new NotFoundException('Not found NCF')
+        }else{
+            const data = await this.page.evaluate(() => {
+                const tds = Array.from(document.querySelectorAll('table tbody tr td span'))
+                  return tds.map(td => td.innerHTML)
+              });
+              console.log(data);
         }
     }
     

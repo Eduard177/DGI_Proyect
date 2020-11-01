@@ -3,10 +3,10 @@ import { Body, Controller, Get } from '@nestjs/common';
 import { RncDTO } from './dto/rnc.dto';
 import { RncService } from './rnc.service';
 
-@Controller('scraping')
+@Controller('rnc')
 export class RncController {
     constructor(private readonly rncService: RncService) {}
-    @Get('rnc')
+    @Get()
     async rnc(@Body() rncDto: RncDTO){
         return this.rncService.crawl('https://www.dgii.gov.do/app/WebApps/ConsultasWeb/consultas/rnc.aspx#',rncDto.RNC);
     }
