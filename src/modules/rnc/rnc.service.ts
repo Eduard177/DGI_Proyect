@@ -21,7 +21,7 @@ export class RncService {
     }
     async isValue(){
         const isValue = await this.page.evaluate(()=>{
-            const RNC = document.querySelector('#ctl00_cphMain_dvDatosContribuyentes > tbody > tr')
+            const RNC = document.querySelector('#ctl00_cphMain_dvDatosContribuyentes > tbody')
             return RNC
         })
         if(!isValue){
