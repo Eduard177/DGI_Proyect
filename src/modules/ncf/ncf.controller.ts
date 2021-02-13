@@ -6,7 +6,7 @@ import { NcfService } from './ncf.service';
 export class NcfController {
     constructor(private readonly ncfService: NcfService) {}
     @Get()
-    async nfc(@Body() payload){
+    async ncf(@Body() payload){
         return this.ncfService.fetchRncDataByWebScrapping('https://dgii.gov.do/app/WebApps/ConsultasWeb2/ConsultasWeb/consultas/ncf.aspx',payload.rnc, payload.ncf);
     }
 }
