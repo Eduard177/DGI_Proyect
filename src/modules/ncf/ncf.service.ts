@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectPage } from 'nest-puppeteer';
 import type { Page } from 'puppeteer';
@@ -14,16 +13,16 @@ export class NcfService {
         return await this.isValue();
     }
 
-    async crawl(url: string){
+    async crawl(url: string) : Promise<void>{
         await this.page.goto(url, { waitUntil: 'networkidle2' });
         await this.page.content();
     };
         
-    async foundValue(rnc: string, ncf: string){
+    async foundValue(rnc: string, ncf: string) : Promise<void>{
         await this.page.type("#cphMain_txtRNC",rnc);
         await this.page.type("#cphMain_txtNCF",ncf);
         await this.page.click('#cphMain_btnConsultar');
-        await this.page.waitFor(3000);
+        await this.page.waitFor(500);
         await this.isValue();
     }
 

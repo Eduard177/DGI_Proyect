@@ -21,7 +21,7 @@ export class RncService {
     async foundValue(rnc : string) : Promise<void> {
         await this.page.type("#ctl00_cphMain_txtRNCCedula",rnc )
         await this.page.click('#ctl00_cphMain_btnBuscarPorRNC')
-        await this.page.waitFor(3000)
+        await this.page.waitFor(500)
     }
 
     async isValue() : Promise<RncFetchedDataInterface>  {

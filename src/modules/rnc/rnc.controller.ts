@@ -1,13 +1,12 @@
-import { Body, Controller, Get } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { Body, Controller, Post } from '@nestjs/common';
 import { RncService } from './rnc.service';
 
 @Controller('rnc')
 export class RncController {
-    constructor(private readonly rncService: RncService) {}
-    @Get()
-    async rnc(@Body() payload){
-        return this.rncService.fetchRncDataByWebScrapping(
-          'https://www.dgii.gov.do/app/WebApps/ConsultasWeb/consultas/rnc.aspx#'
-          ,payload.rnc);
+    constructor(private readonly rncService: RncService) {};
+    @Post()
+    async rnc(@Body() payload: any){
+        return this.rncService.fetchRncDataByWebScrapping('https://www.dgii.gov.do/app/WebApps/ConsultasWeb/consultas/rnc.aspx#',payload.rnc);
     }
 }
