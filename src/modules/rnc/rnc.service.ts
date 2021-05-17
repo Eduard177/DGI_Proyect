@@ -10,18 +10,18 @@ export class RncService {
     async fetchRncDataByWebScrapping(url: string, rnc: string) : Promise<RncFetchedDataInterface> {
         await this.crawl(url);
         await this.foundValue(rnc);
-        return await this.isValue();
+        return this.isValue();
     }
 
     async crawl(url: string) : Promise<void>{
         await this.page.goto(url, { waitUntil: 'networkidle2' });
         await this.page.content();
-    };
+    }
     
     async foundValue(rnc : string) : Promise<void> {
         await this.page.type("#ctl00_cphMain_txtRNCCedula",rnc )
         await this.page.click('#ctl00_cphMain_btnBuscarPorRNC')
-        await this.page.waitFor(500)
+        await this.page.waitFor(1000)
     }
 
     async isValue() : Promise<RncFetchedDataInterface>  {

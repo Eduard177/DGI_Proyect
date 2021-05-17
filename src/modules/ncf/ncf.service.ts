@@ -10,19 +10,19 @@ export class NcfService {
     async fetchRncDataByWebScrapping(url: string, rnc: string, ncf: string) : Promise<NcfFetchedDataInterface> {
         await this.crawl(url);
         await this.foundValue(rnc, ncf);
-        return await this.isValue();
+        return this.isValue();
     }
 
     async crawl(url: string) : Promise<void>{
         await this.page.goto(url, { waitUntil: 'networkidle2' });
         await this.page.content();
-    };
+    }
         
     async foundValue(rnc: string, ncf: string) : Promise<void>{
         await this.page.type("#cphMain_txtRNC",rnc);
         await this.page.type("#cphMain_txtNCF",ncf);
         await this.page.click('#cphMain_btnConsultar');
-        await this.page.waitFor(500);
+        await this.page.waitFor(1000);
         await this.isValue();
     }
 
