@@ -1,6 +1,9 @@
 {
   "name": "dgi-proyect",
   "version": "0.0.1",
+    "engines": {
+    "node": "^14"
+  },
   "description": "",
   "author": "",
   "private": true,
