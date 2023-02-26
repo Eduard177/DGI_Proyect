@@ -22,7 +22,6 @@ export class NcfService {
         await this.page.type("#cphMain_txtRNC",rnc);
         await this.page.type("#cphMain_txtNCF",ncf);
         await this.page.click('#cphMain_btnConsultar');
-        await this.page.waitFor(1000);
         await this.isValue();
     }
 
