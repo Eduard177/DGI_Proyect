@@ -19,7 +19,9 @@ export class ConfigService {
             this.envConfig = parse(fs.readFileSync(envFilePath));
         }else {
             this.envConfig = {
-                PORT: process.env.PORT,    
+                PORT: process.env.PORT,   
+                URL_RNC_DGI: process.env.URL_RNC_DGI,
+                URL_NCF_DGI: process.env.URL_NCF_DGI 
             }
         }
     }
