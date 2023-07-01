@@ -1,26 +1,31 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectPage } from 'nest-puppeteer';
 import  { Page}  from 'puppeteer';
+import * as puppeteer from 'puppeteer';
 import { RncFetchedDataInterface } from './interfaces/rncFetchedData.interface';
+import { ConfigService } from 'src/config/config.service';
+import { Configuration } from 'src/config/config.keys';
 
 @Injectable()
 export class RncService {
-    constructor(@InjectPage() private readonly page: Page) {}
+    constructor(@InjectPage() private readonly page: Page, private readonly configService: ConfigService) {}
 
-    async fetchRncDataByWebScrapping(url: string, rnc: string) : Promise<RncFetchedDataInterface> {
-        await this.crawl(url);
+    async fetchRncDataByWebScrapping(rnc: string) : Promise<RncFetchedDataInterface> {
+        await this.crawl();
         await this.foundValue(rnc);
         return this.isValue();
     }
 
-    async crawl(url: string) : Promise<void>{
-        await this.page.goto(url, { waitUntil: 'networkidle2' });
-        await this.page.content();
+    async crawl() : Promise<void>{
+        await this.page.goto(this.configService.get(Configuration.URL_RNC_DGI), { waitUntil: 'networkidle2'});
+        await this.page.content()
+        await this.page.waitForTimeout(100)
     }
-    
+
     async foundValue(rnc : string) : Promise<void> {
         await this.page.type("#ctl00_cphMain_txtRNCCedula",rnc )
         await this.page.click('#ctl00_cphMain_btnBuscarPorRNC')
+        await this.page.waitForTimeout(100)
     }
 
     async isValue() : Promise<RncFetchedDataInterface>  {

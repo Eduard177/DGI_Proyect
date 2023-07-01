@@ -7,7 +7,6 @@ export class RncController {
     @Get()
     async rnc(@Query('rnc') rnc: string){
         return this.rncService.fetchRncDataByWebScrapping(
-          process.env.URL_RNC_DGI,
           rnc,
         );
     }
