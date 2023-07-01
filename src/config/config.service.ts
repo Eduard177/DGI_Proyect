@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import {parse} from 'dotenv'
+import { join } from 'path';
 
 export class ConfigService {
     private readonly envConfig: {[key: string]:string}
@@ -8,7 +9,7 @@ export class ConfigService {
         const isDevelemntEnv= process.env.NODE_ENV !== "production";
 
         if(isDevelemntEnv){
-            const envFilePath = __dirname + '/../../.env';
+            const envFilePath = join(process.cwd(), `.env`);
             const existsPath = fs.existsSync(envFilePath);
 
             if(!existsPath){
@@ -19,9 +20,9 @@ export class ConfigService {
             this.envConfig = parse(fs.readFileSync(envFilePath));
         }else {
             this.envConfig = {
-                PORT: process.env.PORT,   
+                PORT: process.env.PORT,
                 URL_RNC_DGI: process.env.URL_RNC_DGI,
-                URL_NCF_DGI: process.env.URL_NCF_DGI 
+                URL_NCF_DGI: process.env.URL_NCF_DGI
             }
         }
     }

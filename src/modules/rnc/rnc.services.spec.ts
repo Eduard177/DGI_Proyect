@@ -1,6 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Page } from 'puppeteer';
 import { RncService } from './rnc.service';
+import { ConfigService } from 'src/config/config.service';
 
 describe('RncService', () => {
   let rncService: RncService;
@@ -14,7 +15,8 @@ describe('RncService', () => {
       click: jest.fn().mockResolvedValue(undefined),
       evaluate: jest.fn().mockResolvedValue(undefined),
     } as any;
-    rncService = new RncService(mockPage);
+    
+    rncService = new RncService(mockPage, new ConfigService);
   });
 
   describe('fetchRncDataByWebScrapping', () => {
@@ -24,7 +26,6 @@ describe('RncService', () => {
 
       try {
         await rncService.fetchRncDataByWebScrapping(
-          'http://example.com',
           '123456789',
         );
       } catch (error) {
@@ -56,7 +57,6 @@ describe('RncService', () => {
         ]);
       expect(
         await rncService.fetchRncDataByWebScrapping(
-          'http://example.com',
           '123456789',
         ),
       ).toEqual({

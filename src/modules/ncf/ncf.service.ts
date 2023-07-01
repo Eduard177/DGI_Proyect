@@ -2,27 +2,31 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectPage } from 'nest-puppeteer';
 import type { Page } from 'puppeteer';
 import { NcfFetchedDataInterface } from './interfaces/ncfFetchedData.interface';
+import { ConfigModule } from "../../config/config.module";
+import { ConfigService } from "../../config/config.service";
+import { Configuration } from "../../config/config.keys";
 
 @Injectable()
 export class NcfService {
-    constructor(@InjectPage() private readonly page: Page) {}
+    constructor(@InjectPage() private readonly page: Page, private readonly configService: ConfigService) {}
 
-    async fetchRncDataByWebScrapping(url: string, rnc: string, ncf: string) : Promise<NcfFetchedDataInterface> {
-        await this.crawl(url);
+    async fetchRncDataByWebScrapping( rnc: string, ncf: string) : Promise<NcfFetchedDataInterface> {
+        await this.crawl();
         await this.foundValue(rnc, ncf);
         return this.isValue();
     }
 
-    async crawl(url: string) : Promise<void>{
-        await this.page.goto(url, { waitUntil: 'networkidle2' });
+    async crawl() : Promise<void>{
+        await this.page.goto(this.configService.get(Configuration.URL_NCF_DGI), { waitUntil: 'load', timeout: 0 });
         await this.page.content();
+        await this.page.waitForTimeout(1000)
     }
         
     async foundValue(rnc: string, ncf: string) : Promise<void>{
         await this.page.type("#cphMain_txtRNC",rnc);
         await this.page.type("#cphMain_txtNCF",ncf);
         await this.page.click('#cphMain_btnConsultar');
-        await this.isValue();
+        await this.page.waitForTimeout(1000)
     }
 
     async isValue() : Promise<NcfFetchedDataInterface>  {

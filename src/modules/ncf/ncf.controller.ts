@@ -7,7 +7,6 @@ export class NcfController {
     @Get()
     async ncf(@Query('rnc') rnc: string, @Query('ncf') ncf: string){
         return this.ncfService.fetchRncDataByWebScrapping(
-          process.env.URL_NCF_DGI,
           rnc,
           ncf,
         );
