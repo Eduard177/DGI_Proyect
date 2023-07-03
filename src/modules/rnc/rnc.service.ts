@@ -17,15 +17,29 @@ export class RncService {
     }
 
     async crawl() : Promise<void>{
-        await this.page.goto(this.configService.get(Configuration.URL_RNC_DGI), { waitUntil: 'networkidle2'});
-        await this.page.content()
-        await this.page.waitForTimeout(100)
+        try {
+          await this.page.goto(
+            this.configService.get(Configuration.URL_RNC_DGI),
+            { waitUntil: 'networkidle2' },
+          );
+          await this.page.content();
+          new Promise((r) => setTimeout(r, 1000));
+        } catch (e) {
+          console.log(e);
+          throw e;
+        }
     }
 
     async foundValue(rnc : string) : Promise<void> {
-        await this.page.type("#ctl00_cphMain_txtRNCCedula",rnc )
-        await this.page.click('#ctl00_cphMain_btnBuscarPorRNC')
-        await this.page.waitForTimeout(100)
+        try {
+          await this.page.type('#ctl00_cphMain_txtRNCCedula', rnc);
+          await this.page.click('#ctl00_cphMain_btnBuscarPorRNC');
+          new Promise((r) => setTimeout(r, 1000));
+        } catch (e) {
+          console.log(e);
+          throw e;
+        }
+       
     }
 
     async isValue() : Promise<RncFetchedDataInterface>  {

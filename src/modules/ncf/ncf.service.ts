@@ -17,16 +17,29 @@ export class NcfService {
     }
 
     async crawl() : Promise<void>{
-        await this.page.goto(this.configService.get(Configuration.URL_NCF_DGI), { waitUntil: 'load', timeout: 0 });
-        await this.page.content();
-        await this.page.waitForTimeout(1000)
+        try {
+          await this.page.goto(
+            this.configService.get(Configuration.URL_NCF_DGI),
+            { waitUntil: 'load', timeout: 0 },
+          );
+          await this.page.content();
+          new Promise((r) => setTimeout(r, 2000));
+        } catch (e) {
+          console.log(e);
+          throw e;
+        }
     }
         
     async foundValue(rnc: string, ncf: string) : Promise<void>{
-        await this.page.type("#cphMain_txtRNC",rnc);
-        await this.page.type("#cphMain_txtNCF",ncf);
-        await this.page.click('#cphMain_btnConsultar');
-        await this.page.waitForTimeout(1000)
+        try {
+          await this.page.type('#cphMain_txtRNC', rnc);
+          await this.page.type('#cphMain_txtNCF', ncf);
+          await this.page.click('#cphMain_btnConsultar');
+          new Promise((r) => setTimeout(r, 2000));
+        } catch (e) {
+          console.log(e);
+          throw e;
+        }
     }
 
     async isValue() : Promise<NcfFetchedDataInterface>  {
