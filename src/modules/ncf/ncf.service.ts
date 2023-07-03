@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectPage } from 'nest-puppeteer';
 import type { Page } from 'puppeteer';
 import { NcfFetchedDataInterface } from './interfaces/ncfFetchedData.interface';
@@ -17,29 +17,25 @@ export class NcfService {
     }
 
     async crawl() : Promise<void>{
-        try {
           await this.page.goto(
             this.configService.get(Configuration.URL_NCF_DGI),
             { waitUntil: 'load', timeout: 0 },
           );
-          await this.page.content();
-          new Promise((r) => setTimeout(r, 2000));
-        } catch (e) {
-          console.log(e);
-          throw e;
-        }
+        await this.page.content();
+          
     }
         
     async foundValue(rnc: string, ncf: string) : Promise<void>{
-        try {
+        if(!rnc){
+            throw new BadRequestException('RNC cannot be null')
+        }
+        if(!ncf){
+            throw new BadRequestException('NFC cannot be null')
+        }
           await this.page.type('#cphMain_txtRNC', rnc);
           await this.page.type('#cphMain_txtNCF', ncf);
           await this.page.click('#cphMain_btnConsultar');
-          new Promise((r) => setTimeout(r, 2000));
-        } catch (e) {
-          console.log(e);
-          throw e;
-        }
+          await this.page.waitForSelector('#cphMain_pResultado')
     }
 
     async isValue() : Promise<NcfFetchedDataInterface>  {

@@ -1,7 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectPage } from 'nest-puppeteer';
 import  { Page}  from 'puppeteer';
-import * as puppeteer from 'puppeteer';
 import { RncFetchedDataInterface } from './interfaces/rncFetchedData.interface';
 import { ConfigService } from 'src/config/config.service';
 import { Configuration } from 'src/config/config.keys';
@@ -17,29 +16,21 @@ export class RncService {
     }
 
     async crawl() : Promise<void>{
-        try {
-          await this.page.goto(
+            await this.page.goto(
             this.configService.get(Configuration.URL_RNC_DGI),
             { waitUntil: 'networkidle2' },
           );
-          await this.page.content();
-          new Promise((r) => setTimeout(r, 1000));
-        } catch (e) {
-          console.log(e);
-          throw e;
-        }
+            await this.page.content();
+          
     }
 
     async foundValue(rnc : string) : Promise<void> {
-        try {
+          if(!rnc){
+              throw new BadRequestException('RNC cannot be null')
+          }
           await this.page.type('#ctl00_cphMain_txtRNCCedula', rnc);
           await this.page.click('#ctl00_cphMain_btnBuscarPorRNC');
-          new Promise((r) => setTimeout(r, 1000));
-        } catch (e) {
-          console.log(e);
-          throw e;
-        }
-       
+          await this.page.waitForSelector('#ctl00_cphMain_dvDatosContribuyentes > tbody')
     }
 
     async isValue() : Promise<RncFetchedDataInterface>  {
